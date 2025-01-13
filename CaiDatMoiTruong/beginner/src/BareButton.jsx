@@ -4,7 +4,6 @@ class BareButton extends React.Component {
   constructor(props) {
     super(props)
   }
-
   handleClick(value) {
     console.log(value)
   }
