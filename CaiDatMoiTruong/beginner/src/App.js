@@ -3,15 +3,20 @@ import './App.css'
 import Lock from './Lock'
 import BareInput from './BareInput'
 import Layout from './Layout'
+import BareButton from './BareButton'
+import LoginControl from './LoginControl'
 
 function App() {
   return (
     <div className='App'>
-      <Lock />
-      <BareInput autoFocus className='input-control' />
-      <Layout>
+      {/* <Lock /> */}
+      {/* <Layout>
+        <BareInput autoFocus className='input-control' />
         <h1>Hello anh em</h1>
-      </Layout>
+        <BareButton />
+      </Layout> */}
+
+      <LoginControl isLoggedIn={true} />
     </div>
   )
 }
