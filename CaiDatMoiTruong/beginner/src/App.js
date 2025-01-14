@@ -6,6 +6,7 @@ import Layout from './Layout'
 import BareButton from './BareButton'
 import LoginControl from './LoginControl'
 import CorrectlyState from './CorrectlyState'
+import ProductList from './ProductList/ProductList'
 
 function App() {
   return (
@@ -18,7 +19,8 @@ function App() {
       </Layout> */}
 
       {/* <LoginControl isLoggedIn={true} /> */}
-      <CorrectlyState />
+      {/* <CorrectlyState /> */}
+      <ProductList />
     </div>
   )
 }
