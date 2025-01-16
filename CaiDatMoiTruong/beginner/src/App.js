@@ -8,6 +8,7 @@ import LoginControl from './LoginControl'
 import CorrectlyState from './CorrectlyState'
 import ProductList from './ProductList/ProductList'
 import Form from './Form/Form'
+import UncontrolledComponents from './Form/UncontrolledComponents'
 
 function App() {
   return (
@@ -22,7 +23,8 @@ function App() {
       {/* <LoginControl isLoggedIn={true} /> */}
       {/* <CorrectlyState /> */}
       {/* <ProductList /> */}
-      <Form />
+      {/* <Form /> */}
+      <UncontrolledComponents />
     </div>
   )
 }
