@@ -9,6 +9,9 @@ import CorrectlyState from './CorrectlyState'
 import ProductList from './ProductList/ProductList'
 import Form from './Form/Form'
 import UncontrolledComponents from './Form/UncontrolledComponents'
+import Calculator from './CalculatorTemperature/Calculator'
+import Inheritance from './InheritanceAndComposition/Inheritance'
+import Composition from './InheritanceAndComposition/Composition'
 
 function App() {
   return (
@@ -24,7 +27,10 @@ function App() {
       {/* <CorrectlyState /> */}
       {/* <ProductList /> */}
       {/* <Form /> */}
-      <UncontrolledComponents />
+      {/* <UncontrolledComponents /> */}
+      {/* <Calculator /> */}
+      {/* <Inheritance /> */}
+      <Composition />
     </div>
   )
 }
