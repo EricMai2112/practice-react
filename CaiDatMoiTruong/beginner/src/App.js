@@ -12,6 +12,7 @@ import UncontrolledComponents from './Form/UncontrolledComponents'
 import Calculator from './CalculatorTemperature/Calculator'
 import Inheritance from './InheritanceAndComposition/Inheritance'
 import Composition from './InheritanceAndComposition/Composition'
+import FilterableProductable from './ThinkingInReact/FilterableProductable'
 
 function App() {
   return (
@@ -30,7 +31,8 @@ function App() {
       {/* <UncontrolledComponents /> */}
       {/* <Calculator /> */}
       {/* <Inheritance /> */}
-      <Composition />
+      {/* <Composition /> */}
+      <FilterableProductable />
     </div>
   )
 }
