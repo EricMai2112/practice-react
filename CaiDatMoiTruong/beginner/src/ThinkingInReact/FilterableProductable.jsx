@@ -37,12 +37,45 @@ const productListMock = [
   { category: 'Electronics', price: '$199.99', stocked: true, name: 'Nexus 7' }
 ]
 
+const fetchApi = () => Promise.resolve(productListMock)
+
 export class FilterableProductable extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      productList: [],
+      searchText: '',
+      inStock: false
+    }
+  }
+
+  componentDidMount() {
+    fetchApi().then((res) => {
+      this.setState({
+        productList: res
+      })
+    })
+  }
+
+  handleChange = (event) => {
+    const name = event.target.name
+    if (name === 'product') {
+      this.setState({
+        searchText: event.target.value
+      })
+    } else if (name === 'inStock') {
+      this.setState({
+        inStock: event.target.checked
+      })
+    }
+  }
   render() {
+    const { productList, searchText, inStock } = this.state
     return (
       <div className='FilterableProductable'>
-        <SearchBar />
-        <ProductTable productList={productListMock} />
+        <SearchBar searchText={searchText} inStock={inStock} handleChange={this.handleChange} />
+        <ProductTable productList={productList} searchText={searchText} inStock={inStock} />
       </div>
     )
   }

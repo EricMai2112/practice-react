@@ -4,13 +4,17 @@ import ProductRow from './ProductRow'
 
 export class ProductTable extends Component {
   render() {
-    const { productList } = this.props
+    const { productList, searchText, inStock } = this.props
     let lastCategory = null
 
     // Su dung FOREACH================================
     const rows = []
 
     productList.forEach((productItem) => {
+      if ((inStock && !productItem.stocked) || productItem.name.toLowerCase().indexOf(searchText) === -1) {
+        return
+      }
+
       if (productItem.category != lastCategory) {
         rows.push(<ProductCategoryRow key={productItem.category} category={productItem.category} />)
       }
