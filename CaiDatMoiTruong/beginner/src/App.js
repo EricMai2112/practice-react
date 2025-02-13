@@ -13,6 +13,7 @@ import Calculator from './CalculatorTemperature/Calculator'
 import Inheritance from './InheritanceAndComposition/Inheritance'
 import Composition from './InheritanceAndComposition/Composition'
 import FilterableProductable from './ThinkingInReact/FilterableProductable'
+import Cart from './Cart'
 
 function App() {
   return (
@@ -32,7 +33,8 @@ function App() {
       {/* <Calculator /> */}
       {/* <Inheritance /> */}
       {/* <Composition /> */}
-      <FilterableProductable />
+      {/* <FilterableProductable /> */}
+      <Cart />
     </div>
   )
 }
