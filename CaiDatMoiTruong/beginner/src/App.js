@@ -14,6 +14,7 @@ import Inheritance from './InheritanceAndComposition/Inheritance'
 import Composition from './InheritanceAndComposition/Composition'
 import FilterableProductable from './ThinkingInReact/FilterableProductable'
 import Cart from './Cart'
+import User from './User'
 
 function App() {
   return (
@@ -34,7 +35,11 @@ function App() {
       {/* <Inheritance /> */}
       {/* <Composition /> */}
       {/* <FilterableProductable /> */}
-      <Cart />
+      {/* <Cart /> */}
+      {/* <CongTruNhanChia />
+      <TodoList /> */}
+      {/* <User.class /> */}
+      <User />
     </div>
   )
 }
