@@ -15,6 +15,8 @@ import Composition from './InheritanceAndComposition/Composition'
 import FilterableProductable from './ThinkingInReact/FilterableProductable'
 import Cart from './Cart'
 import User from './User'
+import Navigation from './CustomHook/Navigation'
+import Rename from './CustomHook/Rename'
 
 function App() {
   return (
@@ -39,7 +41,9 @@ function App() {
       {/* <CongTruNhanChia />
       <TodoList /> */}
       {/* <User.class /> */}
-      <User />
+      {/* <User /> */}
+      <Rename />
+      <Navigation />
     </div>
   )
 }
