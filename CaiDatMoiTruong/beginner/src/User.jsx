@@ -1,4 +1,21 @@
-import React, { useState } from 'react'
+import React, { createContext, useEffect, useState } from 'react'
+import UserProfile from './UserProfile'
+
+const getAddress = () => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({
+        nation: 'USA',
+        city: {
+          street: '100 Califonia',
+          house: 'Skywrapper'
+        }
+      })
+    }, 3000)
+  })
+}
+
+export const UserContext = createContext()
 
 export default function User() {
   const [firstName, setFirstName] = useState('Alex')
@@ -45,17 +62,35 @@ export default function User() {
     })
   }
 
+  // useEffect(() => {
+  //   console.log(document.getElementsByTagName('li'))
+  //   console.log('useEffect')
+  // })
+
+  useEffect(() => {
+    getAddress().then((res) => {
+      setAddress((prevAddress) => {
+        const newAddress = { ...prevAddress }
+        newAddress.city = res.city
+        return newAddress
+      })
+    })
+    // console.log('useEffect')
+  }, [])
+
   return (
     <div>
       <h1>User class component</h1>
-      <ul>
-        <li>First name: {firstName}</li>
-        <li>First name: {age}</li>
-        <li>Nation: {address.nation}</li>
-        <li>Street: {address.city.street}</li>
-        <li>House: {address.city.house}</li>
-      </ul>
-      <button onClick={increaseAge}>Increase Age</button>
+      <UserContext.Provider
+        value={{
+          firstName,
+          age,
+          address,
+          increaseAge
+        }}
+      >
+        <UserProfile />
+      </UserContext.Provider>
       <button onClick={changeCity}>Change city</button>
     </div>
   )
