@@ -1,0 +1,36 @@
+.title {
+  font-size: 3rem;
+}
+
+.tasks {
+}
+
+.taskItem {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 2rem;
+}
+
+.taskCheckbox {
+  flex: 0 0 10%;
+  max-width: 10%;
+  height: 2rem;
+  margin-top: 0.5rem;
+}
+
+.taskName {
+  flex: 0 0 70%;
+  max-width: 70%;
+  padding: 0 0 0.5rem;
+  &.taskNameDone {
+    color: #b2b7bb;
+    text-decoration: line-through;
+  }
+}
+
+.taskActions {
+  flex: 0 0 20%;
+  max-width: 20%;
+  display: flex;
+  justify-content: space-between;
+}
