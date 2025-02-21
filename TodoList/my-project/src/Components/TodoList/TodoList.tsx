@@ -61,6 +61,24 @@ export default function TodoList() {
     setCurrentTodo(null)
   }
 
+  const deleteTodo = (id: string) => {
+    // setTodo((prev) => prev.filter((todo) => todo.id !== id))
+
+    if (currentTodo) {
+      setCurrentTodo(null)
+    }
+
+    setTodo((prev) => {
+      const findedIndex = todos.findIndex((todo) => todo.id === id)
+      if (findedIndex > -1) {
+        const result = [...prev]
+        result.splice(findedIndex, 1)
+        return result
+      }
+      return prev
+    })
+  }
+
   return (
     <div className={styles.todoList}>
       <div className={styles.todoListContainer}>
@@ -70,8 +88,20 @@ export default function TodoList() {
           editTodo={editTodo}
           finishedEditTodo={finishedEditTodo}
         />
-        <TaskList isDone={false} todos={notDoneTodo} handleDoneTodo={handleDoneTodo} startEditTodo={startEditTodo} />
-        <TaskList isDone todos={doneTodo} handleDoneTodo={handleDoneTodo} startEditTodo={startEditTodo} />
+        <TaskList
+          isDone={false}
+          todos={notDoneTodo}
+          handleDoneTodo={handleDoneTodo}
+          startEditTodo={startEditTodo}
+          deleteTodo={deleteTodo}
+        />
+        <TaskList
+          isDone
+          todos={doneTodo}
+          handleDoneTodo={handleDoneTodo}
+          startEditTodo={startEditTodo}
+          deleteTodo={deleteTodo}
+        />
       </div>
     </div>
   )
