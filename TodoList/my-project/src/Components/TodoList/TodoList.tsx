@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
+
 import TaskInput from '../TaskInput/TaskInput'
 import TaskList from '../TaskList/TaskList'
-import styles from './todoList.module.scss'
 import { Todo } from '../../@types/todo.type'
+
+import styles from './todoList.module.scss'
 
 interface HandleNewTodo {
   (todos: Todo[]): Todo[]
@@ -26,7 +28,7 @@ export default function TodoList() {
     const todoString = localStorage.getItem('todos')
     const todosObj: Todo[] = JSON.parse(todoString || '[]')
     setTodo(todosObj)
-  })
+  }, [])
 
   const addTodo = (name: string) => {
     const handler = (todosObj: Todo[]) => {
