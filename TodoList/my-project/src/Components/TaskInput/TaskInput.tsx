@@ -1,21 +1,22 @@
 import React, { useState } from 'react'
 
-import PropTypes from 'prop-types'
+// import PropTypes from 'prop-types'
 import { Todo } from '../../@types/todo.type'
 
 import styles from './taskInput.module.scss'
+import connect, { ExtraInforType } from '../../HOC/connect'
+import { debug, log } from '../../HOC/constant'
 
-interface TaskInput {
+interface TaskInput extends ExtraInforType {
   addTodo: (name: string) => void
   currentTodo: Todo | null
   editTodo: (name: string) => void
   finishedEditTodo: () => void
 }
 
-export default function TaskInput(props: TaskInput) {
-  const { addTodo, currentTodo, editTodo, finishedEditTodo } = props
+export function TaskInput(props: TaskInput) {
+  const { addTodo, currentTodo, editTodo, finishedEditTodo, debug, log } = props
   const [name, setName] = useState<string>('')
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (currentTodo) {
@@ -52,18 +53,20 @@ export default function TaskInput(props: TaskInput) {
   )
 }
 
-TaskInput.propTypes = {
-  addTodo: PropTypes.func.isRequired,
-  editTodo: PropTypes.func.isRequired,
-  finishedEditTodo: PropTypes.func.isRequired,
-  currentTodo: PropTypes.oneOf(
-    [
-      PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        done: PropTypes.boolean
-      })
-    ],
-    null
-  )
-}
+// TaskInput.propTypes = {
+//   addTodo: PropTypes.func.isRequired,
+//   editTodo: PropTypes.func.isRequired,
+//   finishedEditTodo: PropTypes.func.isRequired,
+//   currentTodo: PropTypes.oneOf(
+//     [
+//       PropTypes.shape({
+//         id: PropTypes.string.isRequired,
+//         name: PropTypes.string.isRequired,
+//         done: PropTypes.boolean
+//       })
+//     ],
+//     null
+//   )
+// }
+
+export default connect(TaskInput)
