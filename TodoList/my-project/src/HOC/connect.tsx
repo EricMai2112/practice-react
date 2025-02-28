@@ -6,8 +6,10 @@ export interface ExtraInforType {
   log: (value: any) => void
 }
 
-export default function connect<T>(Component: React.ComponentType<T>) {
-  return function (props: Omit<T, keyof ExtraInforType>) {
-    return <Component {...(props as T)} debug={debug} log={log} />
+export default function connect<P>(infectedProps: P) {
+  return function <T>(Component: React.ComponentType<T & P>) {
+    return function (props: Omit<T, keyof P>) {
+      return <Component {...(props as T & {})} {...infectedProps} />
+    }
   }
 }

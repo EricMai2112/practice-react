@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 
 // import PropTypes from 'prop-types'
 import { Todo } from '../../@types/todo.type'
@@ -6,17 +6,25 @@ import { Todo } from '../../@types/todo.type'
 import styles from './taskInput.module.scss'
 import connect, { ExtraInforType } from '../../HOC/connect'
 import { debug, log } from '../../HOC/constant'
+import Title from '../Title'
 
-interface TaskInput extends ExtraInforType {
+interface TaskInputProps extends ExtraInforType {
   addTodo: (name: string) => void
   currentTodo: Todo | null
   editTodo: (name: string) => void
   finishedEditTodo: () => void
 }
 
-export function TaskInput(props: TaskInput) {
+export function TaskInput(props: TaskInputProps) {
   const { addTodo, currentTodo, editTodo, finishedEditTodo, debug, log } = props
   const [name, setName] = useState<string>('')
+
+  const address = useMemo(() => {
+    return {
+      street: 'Aeon Tan Phu'
+    }
+  }, [name])
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (currentTodo) {
@@ -37,9 +45,13 @@ export function TaskInput(props: TaskInput) {
     }
   }
 
+  const handleClickTitle = useCallback((value: any) => {
+    console.log(value)
+  }, [])
+
   return (
     <div className='mb-2'>
-      <h1 className={styles.title}>To do list Typescript</h1>
+      <Title address={address} handleClickTitle={handleClickTitle} />
       <form className={styles.form} onSubmit={handleSubmit}>
         <input
           type='text'
@@ -69,4 +81,4 @@ export function TaskInput(props: TaskInput) {
 //   )
 // }
 
-export default connect(TaskInput)
+export default connect({ debug: debug, log: log })(TaskInput)
