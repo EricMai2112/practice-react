@@ -42,8 +42,8 @@ function App() {
       <TodoList /> */}
       {/* <User.class /> */}
       {/* <User /> */}
-      <Rename />
-      <Navigation />
+      {/* <Rename />
+      <Navigation /> */}
     </div>
   )
 }
