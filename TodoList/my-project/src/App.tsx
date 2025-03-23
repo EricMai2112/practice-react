@@ -8,11 +8,11 @@ import MouseTracker from './Components/MouseTracker/MouseTracker'
 function App() {
   return (
     <div>
-      {/* <TodoList /> */}
+      <TodoList />
       {/* <Watch /> */}
       {/* <Count /> */}
       {/* <Counter /> */}
-      <MouseTracker />
+      {/* <MouseTracker /> */}
     </div>
   )
 }
