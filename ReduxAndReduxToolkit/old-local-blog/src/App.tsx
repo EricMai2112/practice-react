@@ -1,10 +1,10 @@
 import logo from './logo.svg'
+import Blog from './pages/blog'
 
 function App() {
   return (
     <div className='App'>
-      <h1 className='font-bold text-4xl'>hello world</h1>
-      <button className='border bg-amber-500'>add</button>
+      <Blog />
     </div>
   )
 }
