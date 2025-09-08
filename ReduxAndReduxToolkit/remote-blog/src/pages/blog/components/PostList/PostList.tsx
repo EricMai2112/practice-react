@@ -1,11 +1,13 @@
-import React, { useEffect } from 'react'
+import React, { Fragment, useEffect } from 'react'
 import PostItem from '../PostItem'
 import { useSelector } from 'react-redux'
 import { RootState, useAppDispatch } from '../../../../store'
 import { deletePost, startEditingPost, getPostList } from '../../blog.slice'
+import Skeleton from '../SkeletonPost'
 
 export default function PostList() {
   const postList = useSelector((state: RootState) => state.blog.postList)
+  const loading = useSelector((state: RootState) => state.blog.loading)
   const dispatch = useAppDispatch()
 
   useEffect(() => {
@@ -31,14 +33,21 @@ export default function PostList() {
           </p>
         </div>
         <div className='grid gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-2 xl:grid-cols-2 xl:gap-8'>
-          {postList.map((post) => (
-            <PostItem
-              post={post}
-              key={post.id}
-              handleDelete={handleDelete}
-              handleStartEditingPost={handleStartEditingPost}
-            />
-          ))}
+          {loading && (
+            <Fragment>
+              <Skeleton />
+              <Skeleton />
+            </Fragment>
+          )}
+          {!loading &&
+            postList.map((post) => (
+              <PostItem
+                post={post}
+                key={post.id}
+                handleDelete={handleDelete}
+                handleStartEditingPost={handleStartEditingPost}
+              />
+            ))}
         </div>
       </div>
     </div>

@@ -17,6 +17,7 @@ export default function CreatePost() {
   const [formData, setFormData] = useState<Post>(initialState)
   const dispatch = useAppDispatch()
   const editingPost = useSelector((state: RootState) => state.blog.editingPost)
+  const loading = useSelector((state: RootState) => state.blog.loading)
 
   useEffect(() => {
     setFormData(editingPost || initialState)
@@ -31,6 +32,13 @@ export default function CreatePost() {
           body: formData
         })
       )
+        .unwrap()
+        .then((res) => {
+          console.log(res)
+        })
+        .catch((error) => {
+          console.log('error from createPost', error)
+        })
     } else {
       dispatch(addPost(formData))
     }

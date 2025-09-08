@@ -5,21 +5,32 @@ import {
   nanoid,
   createSlice,
   PayloadAction,
-  createAsyncThunk
+  createAsyncThunk,
+  AsyncThunk
 } from '@reduxjs/toolkit'
 import PostList from './components/PostList'
 import { Post } from '../../types/blog.type'
 import { initialPostList } from '../../constants/blog'
 import http from '../../utils/http'
 
+type GenericAsyncThunk = AsyncThunk<unknown, unknown, any>
+
+type PendingAction = ReturnType<GenericAsyncThunk['pending']>
+type RejectedAction = ReturnType<GenericAsyncThunk['rejected']>
+type FulfilledAction = ReturnType<GenericAsyncThunk['fulfilled']>
+
 interface BlogState {
   postList: Post[]
   editingPost: Post | null
+  loading: boolean
+  currentRequestId: undefined | string
 }
 
 const initialState: BlogState = {
   postList: [],
-  editingPost: null
+  editingPost: null,
+  loading: false,
+  currentRequestId: undefined
 }
 
 export const getPostList = createAsyncThunk('blog/getPostList', async (_, thunkAPI) => {
@@ -39,10 +50,17 @@ export const addPost = createAsyncThunk('blog/addPost', async (body: Omit<Post, 
 export const updatePost = createAsyncThunk(
   'blog/updatePost',
   async ({ postId, body }: { postId: String; body: Post }, thunkAPI) => {
-    const response = await http.put<Post>(`posts/${postId}`, body, {
-      signal: thunkAPI.signal
-    })
-    return response.data
+    try {
+      const response = await http.put<Post>(`posts/${postId}`, body, {
+        signal: thunkAPI.signal
+      })
+      return response.data
+    } catch (error: any) {
+      if (error.name === 'AxiosError' && error.response.status === 422) {
+        return thunkAPI.rejectWithValue(error.response.data)
+      }
+      throw error
+    }
   }
 )
 
@@ -91,14 +109,33 @@ const blogSlice = createSlice({
           state.postList.splice(findDeleteIndex, 1)
         }
       })
-      .addMatcher(
-        (action) => action.type.includes('cancel'),
+      .addMatcher<PendingAction>(
+        (action) => action.type.endsWith('/pending'),
         (state, action) => {
-          console.log(current(state))
+          state.loading = true
+          state.currentRequestId = action.meta.requestId
+        }
+      )
+      .addMatcher<RejectedAction>(
+        (action) => action.type.endsWith('/rejected'),
+        (state, action) => {
+          if (state.loading && state.currentRequestId === action.meta.requestId) {
+            state.loading = false
+            state.currentRequestId = undefined
+          }
+        }
+      )
+      .addMatcher<FulfilledAction>(
+        (action) => action.type.endsWith('/fulfilled'),
+        (state, action) => {
+          if (state.loading && state.currentRequestId === action.meta.requestId) {
+            state.loading = false
+            state.currentRequestId = undefined
+          }
         }
       )
       .addDefaultCase((state, action) => {
-        console.log(current(state))
+        // console.log(current(state))
       })
   }
 })
