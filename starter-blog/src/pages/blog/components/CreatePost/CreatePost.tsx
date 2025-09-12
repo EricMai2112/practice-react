@@ -1,8 +1,11 @@
+import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query'
+import classNames from 'classnames'
 import { useAddPostMutation, useGetPostQuery, useUpdatePostMutation } from 'pages/blog/blog.service'
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment, useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from 'store'
 import { Post } from 'types/blog.type'
+import { isEntityError, isFetchBaseQueryError } from 'utils/helper'
 
 const initialState: Omit<Post, 'id'> = {
   title: '',
@@ -12,12 +15,31 @@ const initialState: Omit<Post, 'id'> = {
   published: false
 }
 
+type FormError =
+  | {
+      // [key in keyof Omit<Post, 'id'>]: string
+      [key in keyof typeof initialState]: string
+    }
+  | null
+
 export default function CreatePost() {
   const [formData, setFormData] = useState<Omit<Post, 'id'> | Post>(initialState)
   const [addPost, addPostResult] = useAddPostMutation()
   const postId = useSelector((state: RootState) => state.blog.postId)
   const { data } = useGetPostQuery(postId, { skip: !postId })
   const [updatePost, updatePostResult] = useUpdatePostMutation()
+
+  const errorForm: FormError = useMemo(() => {
+    const errorResult = postId ? updatePostResult.error : addPostResult.error
+    // if ((errorResult as FetchBaseQueryError).data && (errorResult as FetchBaseQueryError).status) {
+    //   return (errorResult as FetchBaseQueryError).data.error
+    // }Không nên dùng ông này
+    if (isEntityError(errorResult)) {
+      console.log('errorResult', errorResult)
+      return errorResult.data.error as FormError
+    }
+    return null
+  }, [postId, updatePostResult, addPostResult])
 
   useEffect(() => {
     if (data) {
@@ -82,18 +104,37 @@ export default function CreatePost() {
         </div>
       </div>
       <div className='mb-6'>
-        <label htmlFor='publishDate' className='mb-2 block text-sm font-medium text-gray-900 dark:text-gray-300'>
+        <label
+          htmlFor='publishDate'
+          className={classNames('mb-2 block text-sm font-medium dark:text-gray-300', {
+            'text-red-700': Boolean(errorForm?.publishDate),
+            'text-gray-900': !Boolean(errorForm?.publishDate)
+          })}
+        >
           Publish Date
         </label>
         <input
           type='datetime-local'
           id='publishDate'
-          className='block w-56 rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-blue-500'
+          className={classNames('block w-56 rounded-lg border p-2.5 text-sm focus:outline-none', {
+            'border-red-500 bg-red-50 text-red-900 placeholder-red-700 focus:border-red-500': Boolean(
+              errorForm?.publishDate
+            ),
+            'border-gray-300 bg-gray-50 text-gray-900 focus:border-blue-500 focus:ring-blue-500': !Boolean(
+              errorForm?.publishDate
+            )
+          })}
           placeholder='Title'
           required
           value={formData.publishDate}
           onChange={(event) => setFormData((prev) => ({ ...prev, publishDate: event.target.value }))}
         />
+        {errorForm?.publishDate && (
+          <p className='test-sm mt-2 text-red-600'>
+            <span className='font-medium'>Lỗi</span>
+            {errorForm.publishDate}
+          </p>
+        )}
       </div>
       <div className='mb-6 flex items-center'>
         <input

@@ -28,7 +28,7 @@ export const blogApi = createApi({
           body
         }
       },
-      invalidatesTags: (result, error, body) => [{ type: 'Posts', id: 'LIST' }]
+      invalidatesTags: (result, error, body) => (error ? [] : [{ type: 'Posts', id: 'LIST' }])
     }),
     getPost: build.query<Post, String>({
       query: (id) => `posts/${id}`
@@ -41,7 +41,7 @@ export const blogApi = createApi({
           body: data.body
         }
       },
-      invalidatesTags: (result, error, data) => [{ type: 'Posts', id: result?.id }]
+      invalidatesTags: (result, error, data) => (error ? [] : [{ type: 'Posts', id: result?.id }])
     }),
     deletePost: build.mutation<{}, string>({
       query(id) {

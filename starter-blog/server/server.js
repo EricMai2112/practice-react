@@ -16,15 +16,22 @@ server.get('/echo', (req, res) => {
 server.use(jsonServer.bodyParser)
 server.use((req, res, next) => {
   if (['POST', 'PUT', 'PATCH'].includes(req.method)) {
-    if (new Date(req.body.publishedDate).getTime() < new Date().getTime()) {
+    if (new Date(req.body.publishDate).getTime() < new Date().getTime()) {
       return res.status(422).send({
         error: {
-          publishDate: 'Khong duoc publish time qua khu'
+          publishDate: 'Không được publish thời điểm trong quá khứ'
         }
       })
     }
+    if (req.body.title === 'admin') {
+      return res.status(500).send({
+        error: 'Server bị lỗi'
+      })
+    }
   }
-  next()
+  setTimeout(() => {
+    next()
+  }, 2000)
 })
 server.use((req, res, next) => {
   setTimeout(next, 3000)
