@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { getStudents } from 'apis/students.api'
 import classNames from 'classnames'
 import { Fragment, useEffect, useState } from 'react'
@@ -26,7 +26,8 @@ export default function Students() {
 
   const { data, isLoading } = useQuery({
     queryKey: ['students', page],
-    queryFn: () => getStudents(page, LIMIT)
+    queryFn: () => getStudents(page, LIMIT),
+    placeholderData: keepPreviousData
   })
   const totalStudents = Number(data?.headers['x-total-count']) || 0
   const totalPage = Math.ceil(totalStudents / LIMIT)
