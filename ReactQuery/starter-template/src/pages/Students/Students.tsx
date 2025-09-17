@@ -1,8 +1,9 @@
-import { keepPreviousData, useQuery } from '@tanstack/react-query'
-import { getStudents } from 'apis/students.api'
+import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query'
+import { deleteStudents, getStudents } from 'apis/students.api'
 import classNames from 'classnames'
 import { Fragment, useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import { Students as StudentsType } from 'types/students.type'
 import { useQueryString } from 'utils/utils'
 
@@ -29,8 +30,20 @@ export default function Students() {
     queryFn: () => getStudents(page, LIMIT),
     placeholderData: keepPreviousData
   })
+
   const totalStudents = Number(data?.headers['x-total-count']) || 0
   const totalPage = Math.ceil(totalStudents / LIMIT)
+
+  const deleteStudentMutation = useMutation({
+    mutationFn: (id: number | string) => deleteStudents(id),
+    onSuccess: (_, id) => {
+      toast.success(`Xóa thành công student ${id}`)
+    }
+  })
+
+  const handleDelete = (id: number | string) => {
+    deleteStudentMutation.mutate(id)
+  }
 
   return (
     <div>
@@ -105,7 +118,12 @@ export default function Students() {
                       >
                         Edit
                       </Link>
-                      <button className='font-medium text-red-600 dark:text-red-500'>Delete</button>
+                      <button
+                        className='font-medium text-red-600 dark:text-red-500'
+                        onClick={() => handleDelete(student.id)}
+                      >
+                        Delete
+                      </button>
                     </td>
                   </tr>
                 ))}
